@@ -8,3 +8,5 @@
 - nodemailer
 - react-hot-toast
 - mongoose (mongodb)
+
+## Base de données: mongodb
