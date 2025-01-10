@@ -8,6 +8,7 @@
 - nodemailer
 - react-hot-toast
 - mongoose (mongodb)
+- chadcn
 
 ## Base de données: mongodb
 
