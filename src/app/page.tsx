@@ -13,11 +13,9 @@ export default function Home() {
         <h1 className="font-bold text-5xl tracking-tighter">
           Bienvenue à la page de connexion
         </h1>
-          <Button>
-            <Link href="/login">
-              Login
-            </Link>
-          </Button>
+        <Button size={'lg'}>
+          <Link href="/login">Login</Link>
+        </Button>
       </div>
     </main>
   );
