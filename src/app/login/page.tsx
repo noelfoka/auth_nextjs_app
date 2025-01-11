@@ -1,10 +1,14 @@
 "use client";
 
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const LoginPage = () => {
   return (
-    <div>LoginPage</div>
+    <Suspense>
+      <main className='w-full h-screen flex justify-center items-center'>
+        
+      </main>
+    </Suspense>
   )
 }
 
