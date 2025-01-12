@@ -7,6 +7,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+
 } from "@/components/ui/card";
 import {
   Form,
@@ -20,8 +21,8 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "../../../schema";
 import { ModeToggle } from "@/components/toggle-mode";
+import { LoginSchema } from "@/schema";
 
 type LoginFormType = z.infer<typeof LoginSchema>;
 
