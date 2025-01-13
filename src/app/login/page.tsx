@@ -1,47 +1,47 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, {useState} from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-
 } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormLabel,
-  FormItem,
-  FormMessage, // Corrected import
-} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ModeToggle } from "@/components/toggle-mode";
-import { LoginSchema } from "@/schema";
-
-type LoginFormType = z.infer<typeof LoginSchema>;
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { axios } from "axios";
 
 const LoginPage = () => {
-  const form = useForm<LoginFormType>({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      name: "",
-    },
-  });
+  const [user, setUser] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
-  const onSubmit = (data: LoginFormType) => {
-    console.log("Form Submitted", data);
+  
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const newErrors = {
+      email: user.email ? "" : "Email is required.",
+      password: user.password ? "" : "Password is required.",
+    };
+    
+    setErrors(newErrors);
+    
+    if (!Object.values(newErrors).some((error) => error)) {
+      console.log("Form Submitted:", user);
+      // API call or additional logic here
+    }
   };
-
+  
+  const onLogin = async () => {
+    console.log("Signup", user);
+  }
+  
   return (
-    <Suspense>
+    <>
       <div className="self-start mt-10 ml-10">
         <ModeToggle />
       </div>
@@ -50,65 +50,47 @@ const LoginPage = () => {
           <CardHeader>
             <CardTitle className="text-2xl">Sign in</CardTitle>
             <CardDescription>
-              Please enter your email address to sign in
+              Please enter your details to sign in
             </CardDescription>
           </CardHeader>
-
           <CardContent className="space-y-4">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
-              >
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...form.register("email")}
-                      placeholder="Enter your email"
-                    />
-                  </FormControl>
-                  <FormMessage>
-                    {form.formState.errors.email?.message}
-                  </FormMessage>
-                </FormItem>
-
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...form.register("password")}
-                      type="password"
-                      placeholder="Enter your password"
-                    />
-                  </FormControl>
-                  <FormMessage>
-                    {form.formState.errors.password?.message}
-                  </FormMessage>
-                </FormItem>
-
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...form.register("name")}
-                      placeholder="Enter your name"
-                    />
-                  </FormControl>
-                  <FormMessage>
-                    {form.formState.errors.name?.message}
-                  </FormMessage>
-                </FormItem>
-
-                <Button type="submit" className="w-full">
-                  Sign In
-                </Button>
-              </form>
-            </Form>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={user.email}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                  placeholder="Enter your email"
+                />
+                {errors.email && <p className="text-red-500">{errors.email}</p>}
+              </div>
+              <div>
+                <label htmlFor="password" className="text-sm font-medium">
+                  Password
+                </label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={user.password}
+                  onChange={(e) => setUser({ ...user, password: e.target.value })}
+                  placeholder="Enter your password"
+                />
+                {errors.password && <p className="text-red-500">{errors.password}</p>}
+              </div>
+              <Button type="submit" className="w-full onClick={onLogin}">
+                Sign Up
+              </Button>
+            </form>
           </CardContent>
         </Card>
       </main>
-    </Suspense>
+    </>
   );
 };
 
